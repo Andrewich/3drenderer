@@ -3,7 +3,7 @@ project(3drenderer C)
 
 find_package(SDL2 REQUIRED CONFIG)
 
-add_executable(3drenderer)
+add_executable(3drenderer WIN32)
 
 target_sources(3drenderer 
     PRIVATE 
