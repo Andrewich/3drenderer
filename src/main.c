@@ -11,8 +11,8 @@ const int window_width = 800;
 const int window_height = 600;
 
 bool initialize_window(void) {
-    if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-        fprintf(stderr, "Error initializing SDL.\n");
+    if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {        
+        SDL_LogCritical(SDL_LOG_CATEGORY_SYSTEM, "Error creating SDL window.\n");
         return false;
     }
 
@@ -25,13 +25,13 @@ bool initialize_window(void) {
         SDL_WINDOW_BORDERLESS
     );
     if (!window) {
-        fprintf(stderr, "Error creating SDL window.\n");
+        SDL_LogCritical(SDL_LOG_CATEGORY_ERROR, "Error creating SDL window.\n");
         return false;
     }
 
     renderer = SDL_CreateRenderer(window, -1, 0);
-    if (!renderer) {
-        fprintf(stderr, "Error creating SDL renderer.\n");
+    if (!renderer) {        
+        SDL_LogCritical(SDL_LOG_CATEGORY_ERROR, "Error creating SDL renderer.\n");
         return false;
     }
 
@@ -39,7 +39,10 @@ bool initialize_window(void) {
 }
 
 void setup(void) {
-    color_buffer = (uint32_t*)malloc(sizeof(uint32_t) * window_width * window_height);
+    color_buffer = (uint32_t*)SDL_malloc(sizeof(uint32_t) * window_width * window_height);    
+    if (!color_buffer) {
+        SDL_LogCritical(SDL_LOG_CATEGORY_ERROR, "Error allocating color buffer.\n");
+    }
 }
 
 void process_input(void) {
@@ -64,20 +67,26 @@ void update(void) {
 }
 
 void destroy_window(void) {
-    free(color_buffer);
+    SDL_free(color_buffer);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+}
+
+void clear_color_buffer(uint32_t color) {
+    SDL_memset4(color_buffer, color, window_width * window_height);
 }
 
 void render(void) {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
 
+    clear_color_buffer(0xFFFFFF00);
+
     SDL_RenderPresent(renderer);
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
     is_running = initialize_window();
 
     setup();
