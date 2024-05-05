@@ -90,6 +90,16 @@ void destroy_window(void) {
     SDL_Quit();
 }
 
+void draw_grid(void) {
+    const uint32_t gray_color = 0xFF555555;
+
+    for (int w = 7; w < window_width; w+=10) {
+        for (int h = 9; h < window_height; h+=10) {            
+            color_buffer[(h * window_width) + w] = gray_color;            
+        }
+    }
+}
+
 void render_color_buffer(void) {
     SDL_UpdateTexture(
         color_buffer_texture,
@@ -105,11 +115,13 @@ void clear_color_buffer(uint32_t color) {
 }
 
 void render(void) {
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
+    draw_grid();
+
     render_color_buffer();
-    clear_color_buffer(0xFFFFFF00);
+    clear_color_buffer(0xFF000000);
 
     SDL_RenderPresent(renderer);
 }
