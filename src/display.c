@@ -50,20 +50,26 @@ void destroy_window(void) {
     SDL_Quit();
 }
 
+void draw_pixel(int x, int y, uint32_t color) {
+    if ((x < window_width && y < window_height) && (x >= 0 && y >= 0)) {
+        color_buffer[(y * window_width) + x] = color;
+    }    
+}
+
 void draw_grid(void) {
     const uint32_t gray_color = 0xFF555555;
 
-    for (int w = 7; w < window_width; w+=10) {
-        for (int h = 9; h < window_height; h+=10) {            
-            color_buffer[(h * window_width) + w] = gray_color;
+    for (int x = 7; x < window_width; x+=10) {
+        for (int y = 9; y < window_height; y+=10) {            
+            draw_pixel(x, y, gray_color);
         }
     }
 }
 
 void draw_rectangle(int x, int y, int width, int height, uint32_t color) {
     for (int w = x; w <= width; ++w) {
-        for (int h = y; h <= height; ++h) {
-            color_buffer[(h * window_width) + w] = color;
+        for (int h = y; h <= height; ++h) {            
+            draw_pixel(w, h, color);
         }
     }
 }
