@@ -10,6 +10,9 @@
 #define N_POINTS (9 * 9 * 9)
 
 vec3_t cube_points[N_POINTS];
+vec2_t projected_points[N_POINTS];
+
+const float fov_factor = 128.f;
 
 bool is_running = false;
 
@@ -57,16 +60,36 @@ void process_input(void) {
     }
 }
 
-void update(void) {
+vec2_t project(vec3_t point) {
+    vec2_t projected_point = {
+        .x = (fov_factor * point.x),
+        .y = (fov_factor * point.y)
+    };
 
+    return projected_point;
+}
+
+void update(void) {
+    for (int i = 0; i < N_POINTS; ++i) {
+        vec3_t point = cube_points[i];        
+
+        projected_points[i] = project(point);
+    }
 }
 
 void render(void) {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-
     draw_grid();
-    draw_rectangle(100, 100, 300, 200, 0xFFA00080);
+    
+    for (int i = 0; i < N_POINTS; ++i) {
+        vec2_t projected_point = projected_points[i];
+        draw_rectangle(
+            projected_point.x + (window_width / 2),
+            projected_point.y + (window_height / 2),
+            4,
+            4,
+            0xFFFFFF00
+        );
+    }
 
     render_color_buffer();
     clear_color_buffer(0xFF000000);

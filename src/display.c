@@ -38,7 +38,7 @@ bool initialize_window(void) {
         SDL_LogCritical(SDL_LOG_CATEGORY_ERROR, "Error creating SDL renderer.\n");
         return false;
     }
-    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+    //SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 
     return true;
 }
@@ -67,9 +67,11 @@ void draw_grid(void) {
 }
 
 void draw_rectangle(int x, int y, int width, int height, uint32_t color) {
-    for (int w = x; w <= width; ++w) {
-        for (int h = y; h <= height; ++h) {            
-            draw_pixel(w, h, color);
+    for (int i = 0; i < width; ++i) {
+        for (int j = 0; j < height; ++j) {
+            int current_x = x + i;
+            int current_y = y + j;
+            draw_pixel(current_x, current_y, color);
         }
     }
 }
