@@ -9,6 +9,8 @@ target_sources(3drenderer
     PRIVATE 
         src/main.c
         src/display.h
-        src/display.c)
+        src/display.c
+        src/vector.h
+        src/vector.c)
 
 target_link_libraries(3drenderer PRIVATE SDL2::SDL2main SDL2::SDL2-static)
