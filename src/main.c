@@ -12,7 +12,9 @@
 vec3_t cube_points[N_POINTS];
 vec2_t projected_points[N_POINTS];
 
-const float fov_factor = 128.f;
+vec3_t camera_position = { 0.f, 0.f, -5.f};
+
+const float fov_factor = 640.f;
 
 bool is_running = false;
 
@@ -62,8 +64,8 @@ void process_input(void) {
 
 vec2_t project(vec3_t point) {
     vec2_t projected_point = {
-        .x = (fov_factor * point.x),
-        .y = (fov_factor * point.y)
+        .x = (fov_factor * point.x) / point.z,
+        .y = (fov_factor * point.y) / point.z
     };
 
     return projected_point;
@@ -73,6 +75,7 @@ void update(void) {
     for (int i = 0; i < N_POINTS; ++i) {
         vec3_t point = cube_points[i];        
 
+        point.z -= camera_position.z;
         projected_points[i] = project(point);
     }
 }
