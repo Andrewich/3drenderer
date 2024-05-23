@@ -11,6 +11,10 @@ target_sources(3drenderer
         src/display.h
         src/display.c
         src/vector.h
-        src/vector.c)
+        src/vector.c
+        src/triangle.h
+        src/triangle.c
+        src/mesh.h
+        src/mesh.c)
 
 target_link_libraries(3drenderer PRIVATE SDL2::SDL2main SDL2::SDL2-static)
