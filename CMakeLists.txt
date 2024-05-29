@@ -14,6 +14,8 @@ target_sources(3drenderer
         src/vector.c
         src/triangle.h
         src/triangle.c
+        src/array.h
+        src/array.c
         src/mesh.h
         src/mesh.c)
 
