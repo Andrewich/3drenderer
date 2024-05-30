@@ -76,13 +76,13 @@ void update(void) {
     cube_rotation.z += 0.01f;
 
     // Loop all triangle faces of our mesh
-    for (int i = 0; i < N_MESH_FACES; ++i) {
-        face_t mesh_face = mesh_faces[i];
+    for (int i = 0; i < N_CUBE_FACES; ++i) {
+        face_t cube_face = cube_faces[i];
 
         vec3_t face_vertices[3];
-        face_vertices[0] = mesh_vertices[mesh_face.a - 1];
-        face_vertices[1] = mesh_vertices[mesh_face.b - 1];
-        face_vertices[2] = mesh_vertices[mesh_face.c - 1];
+        face_vertices[0] = cube_vertices[cube_face.a - 1];
+        face_vertices[1] = cube_vertices[cube_face.b - 1];
+        face_vertices[2] = cube_vertices[cube_face.c - 1];
 
         triangle_t projected_triangle;
 
