@@ -43,8 +43,7 @@ bool initialize_window(void) {
     return true;
 }
 
-void destroy_window(void) {
-    SDL_free(color_buffer);
+void destroy_window(void) {    
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

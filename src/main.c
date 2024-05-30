@@ -12,8 +12,6 @@
 triangle_t* triangles_to_render = NULL;
 
 vec3_t camera_position = { 0.f, 0.f, -5.f};
-vec3_t cube_rotation = { .x = 0.f, .y = 0.f, .z = 0.f };
-
 const float fov_factor = 640.f;
 
 bool is_running = false;
@@ -32,6 +30,9 @@ void setup(void) {
         window_width,
         window_height
     );
+
+    // Loads the cube values in the mesh data structure
+    load_cube_mesh_data();
 }
 
 void process_input(void) {
@@ -71,18 +72,19 @@ void update(void) {
     // Initialize the array of triangles to render
     triangles_to_render = NULL;
 
-    cube_rotation.x += 0.01f;
-    cube_rotation.y += 0.01f;
-    cube_rotation.z += 0.01f;
+    mesh.rotation.x += 0.01f;
+    mesh.rotation.y += 0.01f;
+    mesh.rotation.z += 0.01f;
 
     // Loop all triangle faces of our mesh
-    for (int i = 0; i < N_CUBE_FACES; ++i) {
-        face_t cube_face = cube_faces[i];
+    int num_faces = array_length(mesh.faces);
+    for (int i = 0; i < num_faces; ++i) {
+        face_t mesh_face = mesh.faces[i];
 
         vec3_t face_vertices[3];
-        face_vertices[0] = cube_vertices[cube_face.a - 1];
-        face_vertices[1] = cube_vertices[cube_face.b - 1];
-        face_vertices[2] = cube_vertices[cube_face.c - 1];
+        face_vertices[0] = mesh.vertices[mesh_face.a - 1];
+        face_vertices[1] = mesh.vertices[mesh_face.b - 1];
+        face_vertices[2] = mesh.vertices[mesh_face.c - 1];
 
         triangle_t projected_triangle;
 
@@ -90,9 +92,9 @@ void update(void) {
         for (int j = 0; j < 3; ++j) {
             vec3_t transformed_vertex = face_vertices[j];
 
-            transformed_vertex = vec3_rotate_x(transformed_vertex, cube_rotation.x);
-            transformed_vertex = vec3_rotate_y(transformed_vertex, cube_rotation.y);
-            transformed_vertex = vec3_rotate_z(transformed_vertex, cube_rotation.z);
+            transformed_vertex = vec3_rotate_x(transformed_vertex, mesh.rotation.x);
+            transformed_vertex = vec3_rotate_y(transformed_vertex, mesh.rotation.y);
+            transformed_vertex = vec3_rotate_z(transformed_vertex, mesh.rotation.z);
 
             // Translate the vertex away from the camera
             transformed_vertex.z -= camera_position.z;
@@ -142,6 +144,13 @@ void render(void) {
     SDL_RenderPresent(renderer);
 }
 
+// Free the memory that was dynamically allocated by the program
+void free_resources(void) {
+    SDL_free(color_buffer);
+    array_free(mesh.faces);
+    array_free(mesh.vertices);
+}
+
 int main(int argc, char* argv[]) {
     is_running = initialize_window();
 
@@ -154,6 +163,7 @@ int main(int argc, char* argv[]) {
     }
 
     destroy_window();
+    free_resources();
 
     return 0;
 }
