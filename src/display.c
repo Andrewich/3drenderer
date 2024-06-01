@@ -9,7 +9,9 @@ SDL_Texture* color_buffer_texture = NULL;
 int window_width = 0;
 int window_height = 0;
 
-bool initialize_window(void) {
+bool initialize_window(void) {    
+    SDL_LogSetPriority(SDL_LOG_CATEGORY_CUSTOM, SDL_LOG_PRIORITY_DEBUG);
+
     if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {        
         SDL_LogCritical(SDL_LOG_CATEGORY_SYSTEM, "Error creating SDL window.\n");
         return false;
