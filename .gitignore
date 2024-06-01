@@ -4,7 +4,7 @@
 # Object files
 *.o
 *.ko
-*.obj
+build/**/*.obj
 *.elf
 
 # Linker output
