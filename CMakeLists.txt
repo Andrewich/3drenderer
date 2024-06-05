@@ -19,4 +19,5 @@ target_sources(3drenderer
         src/mesh.h
         src/mesh.c)
 
+target_compile_features(3drenderer PUBLIC c_std_11)
 target_link_libraries(3drenderer PRIVATE SDL2::SDL2main SDL2::SDL2-static)

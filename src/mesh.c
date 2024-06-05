@@ -57,18 +57,47 @@ void load_cube_mesh_data(void) {
     }
 }
 
-void load_obj_file_data(char* filename) {
+typedef struct {
+    size_t begin;
+    int length;
+} slice_t;
+
+int count_lines(char *buffer) {
+    const char ln = '\n';
+    int count = 0;
+    for (char *c = buffer; c != NULL; ++c) {
+        if (*c == ln) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+void slice_string(char *buffer, size_t size) {
+    slice_t lines[size];
+
+    /*int line = 0;
+    int length = 0;
+    for (char *c = buffer; c != NULL; ++c) {
+        if (c == '\n') {
+            lines[line].length = 
+        } else {
+            length++;
+        }
+    }*/
+}
+
+void load_obj_file_data(char *filename) {
     SDL_RWops* file = SDL_RWFromFile(filename, "r");
     if (file) {        
         SDL_LogDebug(SDL_LOG_CATEGORY_CUSTOM, "Filename: %s, File size: %llu\n", filename, SDL_RWsize(file));
 
         // Read file to buffer
         size_t file_size;
-        char* buffer = (char*)SDL_LoadFile_RW(file, &file_size, 1);
+        char *buffer = (char*)SDL_LoadFile_RW(file, &file_size, 1);
         
-        for (size_t i = 0; i < file_size; ++i) {
-            
-        }
+        slice_string(buffer, file_size);
 
         if (buffer) {
             SDL_free(buffer);
