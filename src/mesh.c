@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include <SDL2/SDL_filesystem.h>
 #include <SDL2/SDL_rwops.h>
@@ -57,16 +58,13 @@ void load_cube_mesh_data(void) {
     }
 }
 
-typedef struct {
-    size_t begin;
-    int length;
-} slice_t;
-
 int count_lines(char *buffer) {
     const char ln = '\n';
+    const char zero = '\0';
+
     int count = 0;
-    for (char *c = buffer; c != NULL; ++c) {
-        if (*c == ln) {
+    for (char *c = buffer; *c != zero; ++c) {
+        if ((*c) == ln) {
             count++;
         }
     }
@@ -74,18 +72,44 @@ int count_lines(char *buffer) {
     return count;
 }
 
-void slice_string(char *buffer, size_t size) {
-    slice_t lines[size];
+typedef struct {
+    char *begin;
+    int length;
+} slice_t;
 
-    /*int line = 0;
+void slice_string(char *buffer, slice_t *lines) {
+    const char zero = '\0';
+
+    int line = 0;
     int length = 0;
-    for (char *c = buffer; c != NULL; ++c) {
-        if (c == '\n') {
-            lines[line].length = 
+    for (char *c = buffer; *c != zero; ++c) {
+        if (*c == '\n') {
+            lines[ line ].begin = c;
+            lines[ line ].length = length;
+            length = 0;
+            line++;
         } else {
             length++;
         }
-    }*/
+    }
+}
+
+void parse_obj(char *buffer, size_t size) {
+
+    SDL_strtokr(); // !!!!!
+
+    char *line = strtok(buffer, "\n");
+    while (line != NULL) {
+        size_t len = SDL_strlen(line);
+        char copy_line[len];
+        SDL_strlcpy(line, copy_line, len);
+        char *token = strtok(copy_line, " ");
+        while (token != NULL) {
+            SDL_LogDebug(SDL_LOG_CATEGORY_CUSTOM, "Token: %s", token);
+            token = strtok(copy_line, " ");
+        }
+        line = strtok(buffer, "\n");
+    }
 }
 
 void load_obj_file_data(char *filename) {
@@ -96,8 +120,8 @@ void load_obj_file_data(char *filename) {
         // Read file to buffer
         size_t file_size;
         char *buffer = (char*)SDL_LoadFile_RW(file, &file_size, 1);
-        
-        slice_string(buffer, file_size);
+
+        parse_obj(buffer, file_size);
 
         if (buffer) {
             SDL_free(buffer);
