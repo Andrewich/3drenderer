@@ -96,7 +96,7 @@ void slice_string(char *buffer, slice_t *lines) {
 
 void parse_obj(char *buffer, size_t size) {
 
-    SDL_strtokr(); // !!!!!
+    /*SDL_strtokr(); // !!!!!
 
     char *line = strtok(buffer, "\n");
     while (line != NULL) {
@@ -109,7 +109,7 @@ void parse_obj(char *buffer, size_t size) {
             token = strtok(copy_line, " ");
         }
         line = strtok(buffer, "\n");
-    }
+    }*/
 }
 
 void load_obj_file_data(char *filename) {

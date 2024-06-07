@@ -14,31 +14,6 @@ Dependences
 - **CMake** - used *3.29* verison
 - **SDL-2.28.3** - installed with **conan**
 
-Preparation
------------
-
-Creating a conan profile for Clang on Microsoft Windows (used Ninja):
-
-```
-[settings]
-os=Windows
-arch=x86_64
-build_type=Debug
-compiler=clang
-compiler.version=17
-
-[conf]
-tools.build:compiler_executables={'c': 'C:/Program Files/LLVM/bin/clang.exe', 'cpp': 'C:/Program Files/LLVM/bin/clang++.exe' }
-tools.cmake.cmaketoolchain:generator=Ninja
-
-[buildenv]
-CC=clang-cl
-CXX=clang-cl
-RC=clang-cl
-CONAN_CMAKE_GENERATOR=Ninja
-CMAKE_MAKE_PROGRAM=Ninja
-```
-
 Build
 -----
 
@@ -54,30 +29,11 @@ Ninja
 -----
 ```
 conan install . --output-folder=build -s build_type=Debug --build=missing --profile=clang
-cmake -S . -B build/ -G "Ninja" -DCMAKE_TOOLCHAIN_FILE="build/conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=Debug
+build\conanbuild.bat
+cmake -S . -B build/ -G "Ninja" -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=Debug
 cmake --build build/ --config Debug
+build\deactivate_conanbuild.bat
 ```
-
-Issues
-------
-
-Build error with **LLVM Clang** compiler on **Windows**:
-```
-CMake Error at build/cmakedeps_macros.cmake:67 (message):
-  Library 'SDL2d' not found in package.  If 'SDL2d' is a system library,
-  declare it with 'cpp_info.system_libs' property
-Call Stack (most recent call first):
-  build/SDL2-Target-debug.cmake:24 (conan_package_library_targets)
-  build/SDL2Targets.cmake:30 (include)
-  build/SDL2Config.cmake:16 (include)
-  CMakeLists.txt:4 (find_package)
-```
-
-Solution
-```
-sed -i 's/SDL2d)/SDL2-staticd)/g' ./build/SDL2-debug-x86_64-data.cmake
-```
-
 
 Links
 -----
