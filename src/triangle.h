@@ -13,4 +13,4 @@ typedef struct {
     vec2_t points[3];
 } triangle_t;
 
-#endif // TRIANGLE_H_
+#endif  // TRIANGLE_H_

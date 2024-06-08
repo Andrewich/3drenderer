@@ -20,4 +20,10 @@ target_sources(3drenderer
         src/mesh.c)
 
 target_compile_features(3drenderer PUBLIC c_std_11)
+if (MSVC)
+    target_compile_options(3drenderer PUBLIC /W4)
+else()
+    target_compile_options(3drenderer PUBLIC -Wall -Wextra -Wpedantic)
+endif()
+
 target_link_libraries(3drenderer PRIVATE SDL2::SDL2main SDL2::SDL2-static)
