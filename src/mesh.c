@@ -65,18 +65,31 @@ void parse_obj(char *buffer) {
             char *v2 = SDL_strtokr(endtoken, " ", &endtoken);
             char *v3 = SDL_strtokr(endtoken, " ", &endtoken);
 
-            SDL_LogDebug(SDL_LOG_CATEGORY_CUSTOM, "v1: %s, v2: %s, v3: %s", v1,
-                         v2, v3);
+            vec3_t vec = {.x = SDL_strtod(v1, NULL),
+                          .y = SDL_strtod(v2, NULL),
+                          .z = SDL_strtod(v3, NULL)};
+
+            SDL_LogDebug(SDL_LOG_CATEGORY_CUSTOM, "x: %f, y: %f, z: %f", vec.x,
+                         vec.y, vec.z);
         }
 
         // Get the faces row
         if (SDL_strncmp(token, "f", 255) == 0) {
+            // Get 3 index groups, eg. 1/1/1
             char *f1 = SDL_strtokr(endtoken, " ", &endtoken);
             char *f2 = SDL_strtokr(endtoken, " ", &endtoken);
             char *f3 = SDL_strtokr(endtoken, " ", &endtoken);
 
-            SDL_LogDebug(SDL_LOG_CATEGORY_CUSTOM, "f1: %s, f2: %s, f3: %s", f1,
-                         f2, f3);
+            // Get the first number in the index group, this is Vertex index
+            char *a = SDL_strtokr(f1, "/", &f1);
+            char *b = SDL_strtokr(f2, "/", &f2);
+            char *c = SDL_strtokr(f3, "/", &f3);
+
+            face_t face = {
+                .a = SDL_atoi(a), .b = SDL_atoi(b), .c = SDL_atoi(c)};
+
+            SDL_LogDebug(SDL_LOG_CATEGORY_CUSTOM, "a: %d, b: %d, c: %d", face.a,
+                         face.b, face.c);
         }
     }
 }
