@@ -29,7 +29,6 @@ void setup(void) {
                                              window_width, window_height);
 
     // Loads the cube values in the mesh data structure
-    load_cube_mesh_data();
     load_obj_file_data("../assets/cube.obj");
 }
 

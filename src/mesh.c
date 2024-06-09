@@ -69,8 +69,7 @@ void parse_obj(char *buffer) {
                           .y = SDL_strtod(v2, NULL),
                           .z = SDL_strtod(v3, NULL)};
 
-            SDL_LogDebug(SDL_LOG_CATEGORY_CUSTOM, "x: %f, y: %f, z: %f", vec.x,
-                         vec.y, vec.z);
+            array_push(mesh.vertices, vec);
         }
 
         // Get the faces row
@@ -88,8 +87,7 @@ void parse_obj(char *buffer) {
             face_t face = {
                 .a = SDL_atoi(a), .b = SDL_atoi(b), .c = SDL_atoi(c)};
 
-            SDL_LogDebug(SDL_LOG_CATEGORY_CUSTOM, "a: %d, b: %d, c: %d", face.a,
-                         face.b, face.c);
+            array_push(mesh.faces, face);
         }
     }
 }
